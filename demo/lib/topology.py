@@ -185,7 +185,7 @@ def dump_to_topology(dump, show_mem=True):
                 die = 0 # handle kernels that do not provide topology/die_id
             node = int(mdict["node"])
             core = int(mdict["core"])
-            thread_siblings = eval("0x" + mdict["thread_siblings"].replace(",", ""))
+            thread_siblings = int(mdict["thread_siblings"].replace(",", ""), 16)
             cpu_id = int(mdict["cpu_id"])
             # Calculate thread id.
             # Let the lowest CPU bit owner in thread_siblings be thread 0, next thread 1 and so on.
@@ -275,8 +275,8 @@ def dump_to_res_allowed(res_allowed_dump):
             warning("cannot parse res_allowed line %r" % (line,))
             continue
         owner_mask[mdict["owner"]] = {
-            "cpu": eval("0x" + mdict["cpumask"].replace(",", "")),
-            "mem": eval("0x" + mdict["memmask"].replace(",", ""))
+            "cpu": int(mdict["cpumask"].replace(",", ""), 16),
+            "mem": int(mdict["memmask"].replace(",", ""), 16)
         }
     return owner_mask
 
